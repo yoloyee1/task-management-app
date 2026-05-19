@@ -17,7 +17,6 @@ extends Control
 const CONFIG_PATH = "user://accounts.cfg"
 
 func _ready() -> void:
-	# 確保初始狀態只顯示登入面板
 	login_panel.show()
 	register_panel.hide()
 
@@ -27,7 +26,6 @@ func _show_message(title: String, text: String) -> void:
 	dialog.dialog_text = text
 	add_child(dialog)
 	dialog.popup_centered()
-	# 自動在使用者按下確認後銷毀對話框
 	dialog.confirmed.connect(dialog.queue_free)
 
 func _on_login_button_pressed() -> void:
@@ -35,7 +33,7 @@ func _on_login_button_pressed() -> void:
 	var password = password_line_edit.text
 	
 	if account.is_empty() or password.is_empty():
-		_show_message("登入失敗", "帳號或密碼不能為空")
+		_show_message("Login Failed", "Account or password cannot be empty")
 		return
 		
 	var config = ConfigFile.new()
@@ -45,15 +43,15 @@ func _on_login_button_pressed() -> void:
 		if config.has_section_key("accounts", account):
 			var saved_password = config.get_value("accounts", account)
 			if saved_password == password:
-				# 密碼正確，登入成功
+				# Password correct, login successful
 				if main_screen:
 					get_tree().change_scene_to_packed(main_screen)
 				else:
-					_show_message("登入成功", "登入成功，但未在 Inspector 中設定 main_screen。")
+					_show_message("Login Successful", "Login successful, but main_screen is not set in Inspector.")
 				return
 				
-	# 找不到帳號或密碼錯誤
-	_show_message("登入失敗", "帳密輸入錯誤")
+	# Account not found or incorrect password
+	_show_message("Login Failed", "Invalid account or password")
 
 func _on_register_button_pressed() -> void:
 	var account = reg_account_line_edit.text
@@ -61,31 +59,29 @@ func _on_register_button_pressed() -> void:
 	var confirm_password = confirm_password_line_edit.text
 	
 	if account.is_empty() or password.is_empty():
-		_show_message("註冊失敗", "帳號或密碼不能為空")
+		_show_message("Registration Failed", "Account or password cannot be empty")
 		return
 		
 	if password != confirm_password:
-		_show_message("註冊失敗", "兩次輸入的密碼不一致")
+		_show_message("Registration Failed", "Passwords do not match")
 		return
 		
 	var config = ConfigFile.new()
-	config.load(CONFIG_PATH) # 若檔案不存在會回傳錯誤，但沒關係，因為接下來會建立並存檔
+	config.load(CONFIG_PATH)
 	
 	if config.has_section_key("accounts", account):
-		_show_message("註冊失敗", "此帳號已經存在")
+		_show_message("Registration Failed", "Account already exists")
 		return
 		
 	config.set_value("accounts", account, password)
 	config.save(CONFIG_PATH)
 	
-	_show_message("註冊成功", "帳號註冊成功！請返回登入")
+	_show_message("Registration Successful", "Account registered successfully! Please return to login")
 	
-	# 清空註冊欄位
 	reg_account_line_edit.text = ""
 	reg_password_line_edit.text = ""
 	confirm_password_line_edit.text = ""
 	
-	# 自動跳轉回登入畫面
 	_on_go_to_login_button_pressed()
 
 func _on_go_to_register_button_pressed() -> void:

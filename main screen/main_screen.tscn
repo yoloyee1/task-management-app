@@ -1,0 +1,73 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfe80puoec74c"]
+
+[ext_resource type="Script" uid="uid://dol1jo68n2ndm" path="res://main screen/main_screen.gd" id="1_xxx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0hkt3"]
+font_size = 50
+
+[node name="main screen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xxx")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Task Management App"
+label_settings = SubResource("LabelSettings_0hkt3")
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="adding new task" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ToggleFormButton" type="Button" parent="VBoxContainer/HBoxContainer/adding new task"]
+layout_mode = 2
+text = "Task Settings (Click to Expand)"
+
+[node name="FormVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/adding new task"]
+visible = false
+layout_mode = 2
+
+[node name="TitleLineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer/adding new task/FormVBox"]
+layout_mode = 2
+placeholder_text = "Task Title"
+
+[node name="DescLineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer/adding new task/FormVBox"]
+layout_mode = 2
+placeholder_text = "Task Description"
+
+[node name="PriorityOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer/adding new task/FormVBox"]
+layout_mode = 2
+selected = 1
+item_count = 3
+popup/item_0/text = "Low Priority"
+popup/item_0/id = 0
+popup/item_1/text = "Normal Priority"
+popup/item_1/id = 1
+popup/item_2/text = "High Priority"
+popup/item_2/id = 2
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "Add New Task"
+
+[node name="existing task" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3

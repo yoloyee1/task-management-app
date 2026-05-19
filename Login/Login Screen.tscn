@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://d3ji04mitfx7e"]
 
 [ext_resource type="Script" uid="uid://xjo6gekbv3nv" path="res://Login/login_screen.gd" id="1_b5hkx"]
-[ext_resource type="PackedScene" uid="uid://dfe80puoec74c" path="res://main_screen.tscn" id="2_a0yns"]
+[ext_resource type="PackedScene" uid="uid://dfe80puoec74c" path="res://main screen/main_screen.tscn" id="2_a0yns"]
 
 [node name="LoginScreen" type="Control"]
 layout_mode = 3
@@ -48,7 +48,7 @@ theme_override_constants/separation = 24
 [node name="TitleLabel" type="Label" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "系統登入"
+text = "Login"
 horizontal_alignment = 1
 
 [node name="InputVBox" type="VBoxContainer" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer"]
@@ -61,11 +61,11 @@ theme_override_constants/separation = 8
 
 [node name="AccountLabel" type="Label" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/InputVBox/AccountVBox"]
 layout_mode = 2
-text = "帳號"
+text = "Account"
 
 [node name="AccountLineEdit" type="LineEdit" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/InputVBox/AccountVBox"]
 layout_mode = 2
-placeholder_text = "請輸入帳號"
+placeholder_text = "Enter Account"
 
 [node name="PasswordVBox" type="VBoxContainer" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/InputVBox"]
 layout_mode = 2
@@ -73,25 +73,25 @@ theme_override_constants/separation = 8
 
 [node name="PasswordLabel" type="Label" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/InputVBox/PasswordVBox"]
 layout_mode = 2
-text = "密碼"
+text = "Password"
 
 [node name="PasswordLineEdit" type="LineEdit" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/InputVBox/PasswordVBox"]
 layout_mode = 2
-placeholder_text = "請輸入密碼"
+placeholder_text = "Enter Password"
 secret = true
 
 [node name="LoginButton" type="Button" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "登入"
+text = "Login"
 
 [node name="GoToRegisterButton" type="Button" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
 theme_override_colors/font_hover_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_font_sizes/font_size = 14
-text = "沒有帳號？按此註冊"
+text = "No account? Register here"
 flat = true
 
 [node name="RegisterPanel" type="PanelContainer" parent="CenterContainer"]
@@ -113,7 +113,7 @@ theme_override_constants/separation = 24
 [node name="TitleLabel" type="Label" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "註冊帳號"
+text = "Register Account"
 horizontal_alignment = 1
 
 [node name="InputVBox" type="VBoxContainer" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer"]
@@ -126,11 +126,11 @@ theme_override_constants/separation = 8
 
 [node name="AccountLabel" type="Label" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox/AccountVBox"]
 layout_mode = 2
-text = "帳號"
+text = "Account"
 
 [node name="RegAccountLineEdit" type="LineEdit" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox/AccountVBox"]
 layout_mode = 2
-placeholder_text = "請設定帳號"
+placeholder_text = "Set Account"
 
 [node name="PasswordVBox" type="VBoxContainer" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox"]
 layout_mode = 2
@@ -138,11 +138,11 @@ theme_override_constants/separation = 8
 
 [node name="PasswordLabel" type="Label" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox/PasswordVBox"]
 layout_mode = 2
-text = "密碼"
+text = "Password"
 
 [node name="RegPasswordLineEdit" type="LineEdit" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox/PasswordVBox"]
 layout_mode = 2
-placeholder_text = "請設定密碼"
+placeholder_text = "Set Password"
 secret = true
 
 [node name="ConfirmPasswordVBox" type="VBoxContainer" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox"]
@@ -151,25 +151,25 @@ theme_override_constants/separation = 8
 
 [node name="ConfirmPasswordLabel" type="Label" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox/ConfirmPasswordVBox"]
 layout_mode = 2
-text = "確認密碼"
+text = "Confirm Password"
 
 [node name="ConfirmPasswordLineEdit" type="LineEdit" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox/ConfirmPasswordVBox"]
 layout_mode = 2
-placeholder_text = "請再次輸入密碼"
+placeholder_text = "Enter Password Again"
 secret = true
 
 [node name="RegisterButton" type="Button" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "註冊"
+text = "Register"
 
 [node name="GoToLoginButton" type="Button" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
 theme_override_colors/font_hover_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_font_sizes/font_size = 14
-text = "已有帳號？返回登入"
+text = "Already have an account? Back to Login"
 flat = true
 
 [connection signal="pressed" from="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/LoginButton" to="." method="_on_login_button_pressed"]
