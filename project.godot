@@ -1,0 +1,31 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Task Management App"
+run/main_scene="uid://d3ji04mitfx7e"
+config/features=PackedStringArray("26.1", "GL Compatibility", "Redot")
+config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
+window/handheld/orientation=1
+
+[editor]
+
+movie_writer/movie_file="D:/making game/RedotMovie/task management app.avi"
+
+[rendering]
+
+renderer/rendering_method="mobile"

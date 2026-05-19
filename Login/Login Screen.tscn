@@ -1,0 +1,178 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3ji04mitfx7e"]
+
+[ext_resource type="Script" uid="uid://xjo6gekbv3nv" path="res://Login/login_screen.gd" id="1_b5hkx"]
+[ext_resource type="PackedScene" uid="uid://dfe80puoec74c" path="res://main_screen.tscn" id="2_a0yns"]
+
+[node name="LoginScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_b5hkx")
+main_screen = ExtResource("2_a0yns")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.121569, 0.145098, 0.192157, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LoginPanel" type="PanelContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(400, 300)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/LoginPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/LoginPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "系統登入"
+horizontal_alignment = 1
+
+[node name="InputVBox" type="VBoxContainer" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="AccountVBox" type="VBoxContainer" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/InputVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="AccountLabel" type="Label" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/InputVBox/AccountVBox"]
+layout_mode = 2
+text = "帳號"
+
+[node name="AccountLineEdit" type="LineEdit" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/InputVBox/AccountVBox"]
+layout_mode = 2
+placeholder_text = "請輸入帳號"
+
+[node name="PasswordVBox" type="VBoxContainer" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/InputVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PasswordLabel" type="Label" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/InputVBox/PasswordVBox"]
+layout_mode = 2
+text = "密碼"
+
+[node name="PasswordLineEdit" type="LineEdit" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/InputVBox/PasswordVBox"]
+layout_mode = 2
+placeholder_text = "請輸入密碼"
+secret = true
+
+[node name="LoginButton" type="Button" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "登入"
+
+[node name="GoToRegisterButton" type="Button" parent="CenterContainer/LoginPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_colors/font_hover_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "沒有帳號？按此註冊"
+flat = true
+
+[node name="RegisterPanel" type="PanelContainer" parent="CenterContainer"]
+visible = false
+custom_minimum_size = Vector2(400, 300)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/RegisterPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/RegisterPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "註冊帳號"
+horizontal_alignment = 1
+
+[node name="InputVBox" type="VBoxContainer" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="AccountVBox" type="VBoxContainer" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="AccountLabel" type="Label" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox/AccountVBox"]
+layout_mode = 2
+text = "帳號"
+
+[node name="RegAccountLineEdit" type="LineEdit" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox/AccountVBox"]
+layout_mode = 2
+placeholder_text = "請設定帳號"
+
+[node name="PasswordVBox" type="VBoxContainer" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PasswordLabel" type="Label" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox/PasswordVBox"]
+layout_mode = 2
+text = "密碼"
+
+[node name="RegPasswordLineEdit" type="LineEdit" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox/PasswordVBox"]
+layout_mode = 2
+placeholder_text = "請設定密碼"
+secret = true
+
+[node name="ConfirmPasswordVBox" type="VBoxContainer" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ConfirmPasswordLabel" type="Label" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox/ConfirmPasswordVBox"]
+layout_mode = 2
+text = "確認密碼"
+
+[node name="ConfirmPasswordLineEdit" type="LineEdit" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/InputVBox/ConfirmPasswordVBox"]
+layout_mode = 2
+placeholder_text = "請再次輸入密碼"
+secret = true
+
+[node name="RegisterButton" type="Button" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "註冊"
+
+[node name="GoToLoginButton" type="Button" parent="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_colors/font_hover_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "已有帳號？返回登入"
+flat = true
+
+[connection signal="pressed" from="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/LoginButton" to="." method="_on_login_button_pressed"]
+[connection signal="pressed" from="CenterContainer/LoginPanel/MarginContainer/VBoxContainer/GoToRegisterButton" to="." method="_on_go_to_register_button_pressed"]
+[connection signal="pressed" from="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/RegisterButton" to="." method="_on_register_button_pressed"]
+[connection signal="pressed" from="CenterContainer/RegisterPanel/MarginContainer/VBoxContainer/GoToLoginButton" to="." method="_on_go_to_login_button_pressed"]
