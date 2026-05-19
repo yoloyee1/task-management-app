@@ -29,3 +29,4 @@ movie_writer/movie_file="D:/making game/RedotMovie/task management app.avi"
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
