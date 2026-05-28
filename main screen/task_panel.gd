@@ -13,6 +13,9 @@ func _ready() -> void:
 	delete_button.pressed.connect(_on_delete_pressed)
 
 func set_task_data(task: TaskData) -> void:
+	if not is_node_ready():
+		await ready
+	
 	_task = task
 	title_label.text = "Title: " + task.title
 	

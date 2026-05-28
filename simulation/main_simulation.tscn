@@ -1,0 +1,297 @@
+[gd_scene load_steps=4 format=3 uid="uid://bvvjf6k0bs762"]
+
+[ext_resource type="Script" uid="uid://da0gjr0mnuobe" path="res://simulation/main_simulation.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://bkvu844wv70ix" path="res://simulation/simulation_manager.gd" id="2_mgr"]
+[ext_resource type="PackedScene" path="res://simulation/shelf.tscn" id="3_shelf"]
+
+[node name="MainSimulation" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main")
+
+[node name="SimulationManager" type="Node" parent="."]
+script = ExtResource("2_mgr")
+
+[node name="Timer" type="Timer" parent="SimulationManager"]
+
+[node name="StoreSelectView" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="StoreSelectView"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12, 0.12, 0.18, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StoreSelectView"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="StoreSelectView/VBoxContainer"]
+layout_mode = 2
+text = "Select a Store"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="StoreSelectView/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="StoreSelectView/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 3
+
+[node name="StoreBtn_0" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 2
+text = "Store 0"
+
+[node name="StoreBtn_1" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 2
+text = "Store 1"
+
+[node name="StoreBtn_2" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 2
+text = "Store 2"
+
+[node name="StoreBtn_3" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 2
+text = "Store 3"
+
+[node name="StoreBtn_4" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 2
+text = "Store 4"
+
+[node name="StoreBtn_5" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 2
+text = "Store 5"
+
+[node name="StoreBtn_6" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 2
+text = "Store 6"
+
+[node name="GlobalTaskUI" type="Control" parent="StoreSelectView"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = 288.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="StoreSelectView/GlobalTaskUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StoreSelectView/GlobalTaskUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GlobalTaskTitle" type="Label" parent="StoreSelectView/GlobalTaskUI/VBoxContainer"]
+layout_mode = 2
+text = "All Restock Tasks"
+horizontal_alignment = 1
+
+[node name="GlobalTaskList" type="ItemList" parent="StoreSelectView/GlobalTaskUI/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StoreDetailView" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopBar" type="HBoxContainer" parent="StoreDetailView"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+
+[node name="BackButton" type="Button" parent="StoreDetailView/TopBar"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "← Back"
+
+[node name="DayLabel" type="Label" parent="StoreDetailView/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Date: Loading..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShelvesContainer" type="Control" parent="StoreDetailView"]
+layout_mode = 1
+anchors_preset = 0
+offset_top = 55.0
+offset_right = 470.0
+offset_bottom = 600.0
+
+[node name="Shelf_0" parent="StoreDetailView/ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 10.0
+offset_right = 160.0
+
+[node name="Shelf_1" parent="StoreDetailView/ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 165.0
+offset_right = 315.0
+
+[node name="Shelf_2" parent="StoreDetailView/ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 320.0
+offset_right = 470.0
+
+[node name="Shelf_3" parent="StoreDetailView/ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 110.0
+offset_right = 160.0
+offset_bottom = 210.0
+
+[node name="Shelf_4" parent="StoreDetailView/ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 165.0
+offset_top = 110.0
+offset_right = 315.0
+offset_bottom = 210.0
+
+[node name="Shelf_5" parent="StoreDetailView/ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 110.0
+offset_right = 470.0
+offset_bottom = 210.0
+
+[node name="Shelf_6" parent="StoreDetailView/ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 220.0
+offset_right = 160.0
+offset_bottom = 320.0
+
+[node name="Shelf_7" parent="StoreDetailView/ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 165.0
+offset_top = 220.0
+offset_right = 315.0
+offset_bottom = 320.0
+
+[node name="Shelf_8" parent="StoreDetailView/ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 220.0
+offset_right = 470.0
+offset_bottom = 320.0
+
+[node name="Shelf_9" parent="StoreDetailView/ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 330.0
+offset_right = 160.0
+offset_bottom = 430.0
+
+[node name="TaskUI" type="Control" parent="StoreDetailView"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -250.0
+offset_top = 55.0
+offset_bottom = 600.0
+grow_horizontal = 0
+
+[node name="Panel" type="Panel" parent="StoreDetailView/TaskUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StoreDetailView/TaskUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TaskTitle" type="Label" parent="StoreDetailView/TaskUI/VBoxContainer"]
+layout_mode = 2
+text = "Restock Tasks"
+horizontal_alignment = 1
+
+[node name="TaskList" type="ItemList" parent="StoreDetailView/TaskUI/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ShipmentUI" type="Control" parent="StoreDetailView"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_top = 610.0
+offset_right = 720.0
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="StoreDetailView/ShipmentUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StoreDetailView/ShipmentUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ShipmentTitle" type="Label" parent="StoreDetailView/ShipmentUI/VBoxContainer"]
+layout_mode = 2
+text = "📦 Pending Shipments"
+horizontal_alignment = 1
+
+[node name="ShipmentList" type="ItemList" parent="StoreDetailView/ShipmentUI/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3

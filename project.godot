@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Task Management App"
-run/main_scene="uid://d3ji04mitfx7e"
+run/main_scene="res://simulation/main_simulation.tscn"
 config/features=PackedStringArray("26.1", "GL Compatibility", "Redot")
 config/icon="res://icon.svg"
 

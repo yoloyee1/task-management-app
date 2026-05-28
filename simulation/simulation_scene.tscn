@@ -1,0 +1,187 @@
+[gd_scene load_steps=4 format=3 uid="uid://nott26vl8l83"]
+
+[ext_resource type="Script" uid="uid://dgy0tjy0o3hwd" path="res://simulation/simulation_controller.gd" id="1_sim_ctrl"]
+[ext_resource type="Script" uid="uid://cyx3cnih7vspe" path="res://simulation/task_ui.gd" id="2_task_ui"]
+[ext_resource type="PackedScene" path="res://simulation/shelf.tscn" id="3_shelf"]
+
+[node name="SimulationScene" type="Node2D"]
+
+[node name="SimulationController" type="Node" parent="."]
+script = ExtResource("1_sim_ctrl")
+
+[node name="Timer" type="Timer" parent="SimulationController"]
+
+[node name="ShelvesContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Shelf_0" parent="ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 200.0
+offset_bottom = 150.0
+
+[node name="Shelf_1" parent="ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 190.0
+offset_top = 50.0
+offset_right = 340.0
+offset_bottom = 150.0
+
+[node name="Shelf_2" parent="ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 330.0
+offset_top = 50.0
+offset_right = 480.0
+offset_bottom = 150.0
+
+[node name="Shelf_3" parent="ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 170.0
+offset_right = 200.0
+offset_bottom = 270.0
+
+[node name="Shelf_4" parent="ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 190.0
+offset_top = 170.0
+offset_right = 340.0
+offset_bottom = 270.0
+
+[node name="Shelf_5" parent="ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 330.0
+offset_top = 170.0
+offset_right = 480.0
+offset_bottom = 270.0
+
+[node name="Shelf_6" parent="ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 290.0
+offset_right = 200.0
+offset_bottom = 390.0
+
+[node name="Shelf_7" parent="ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 190.0
+offset_top = 290.0
+offset_right = 340.0
+offset_bottom = 390.0
+
+[node name="Shelf_8" parent="ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 330.0
+offset_top = 290.0
+offset_right = 480.0
+offset_bottom = 390.0
+
+[node name="Shelf_9" parent="ShelvesContainer" instance=ExtResource("3_shelf")]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 410.0
+offset_right = 200.0
+offset_bottom = 510.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TopUI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+
+[node name="DayLabel" type="Label" parent="CanvasLayer/TopUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Date: Loading..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="CanvasLayer/TopUI"]
+layout_mode = 1
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 105.0
+offset_bottom = 45.0
+text = "← Back"
+
+[node name="TaskUI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_bottom = -376.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("2_task_ui")
+
+[node name="Panel" type="Panel" parent="CanvasLayer/TaskUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/TaskUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ToggleBtn" type="Button" parent="CanvasLayer/TaskUI/VBoxContainer"]
+layout_mode = 2
+text = "Collapse Tasks"
+
+[node name="TaskList" type="ItemList" parent="CanvasLayer/TaskUI/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ShipmentUI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_top = 709.0
+offset_right = 720.0
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/ShipmentUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ShipmentUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ShipmentTitle" type="Label" parent="CanvasLayer/ShipmentUI/VBoxContainer"]
+layout_mode = 2
+text = "📦 Pending Shipments"
+horizontal_alignment = 1
+
+[node name="ShipmentList" type="ItemList" parent="CanvasLayer/ShipmentUI/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
