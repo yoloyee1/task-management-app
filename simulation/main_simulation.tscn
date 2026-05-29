@@ -51,7 +51,7 @@ theme_override_constants/separation = 12
 [node name="DateLabel" type="Label" parent="StoreSelectView/ContentVBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "📅 Date: Loading..."
+text = "?? Date: Loading..."
 horizontal_alignment = 1
 
 [node name="TimeScaleBox" type="HBoxContainer" parent="StoreSelectView/ContentVBox"]
@@ -72,14 +72,14 @@ step = 0.5
 value = 1.0
 
 [node name="SupplierBox" type="PanelContainer" parent="StoreSelectView/ContentVBox"]
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(120, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 
 [node name="SupplierLabel" type="Label" parent="StoreSelectView/ContentVBox/SupplierBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "🏭 Supplier (進貨方)"
+text = "Supplier"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -120,7 +120,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 4
-columns = 2
+columns = 4
 
 [node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox/ProductGrid"]
 custom_minimum_size = Vector2(80, 12)
@@ -217,7 +217,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 4
-columns = 2
+columns = 4
 
 [node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox/ProductGrid"]
 custom_minimum_size = Vector2(80, 12)
@@ -314,7 +314,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 4
-columns = 2
+columns = 4
 
 [node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox/ProductGrid"]
 custom_minimum_size = Vector2(80, 12)
@@ -411,7 +411,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 4
-columns = 2
+columns = 4
 
 [node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox/ProductGrid"]
 custom_minimum_size = Vector2(80, 12)
@@ -508,7 +508,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 4
-columns = 2
+columns = 4
 
 [node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox/ProductGrid"]
 custom_minimum_size = Vector2(80, 12)
@@ -605,7 +605,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 4
-columns = 2
+columns = 4
 
 [node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox/ProductGrid"]
 custom_minimum_size = Vector2(80, 12)
@@ -702,7 +702,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 4
-columns = 2
+columns = 4
 
 [node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox/ProductGrid"]
 custom_minimum_size = Vector2(80, 12)
@@ -784,7 +784,7 @@ layout_mode = 2
 [node name="GlobalTaskTitle" type="Label" parent="StoreSelectView/ContentVBox/GlobalTaskUI/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
-text = "📋 All Restock Tasks"
+text = "All Restock Tasks"
 horizontal_alignment = 1
 
 [node name="GlobalTaskList" type="ItemList" parent="StoreSelectView/ContentVBox/GlobalTaskUI/VBoxContainer"]
@@ -819,7 +819,7 @@ grow_horizontal = 2
 [node name="BackButton" type="Button" parent="StoreDetailView/TopBar"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "← Back"
+text = "Back"
 
 [node name="DayLabel" type="Label" parent="StoreDetailView/TopBar"]
 layout_mode = 2
@@ -936,10 +936,10 @@ size_flags_vertical = 3
 
 [node name="ShipmentUI" type="Control" parent="StoreDetailView"]
 layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
+anchors_preset = 0
 offset_top = 610.0
 offset_right = 720.0
+offset_bottom = 810.0
 grow_vertical = 2
 
 [node name="Panel" type="Panel" parent="StoreDetailView/ShipmentUI"]
@@ -960,9 +960,75 @@ grow_vertical = 2
 
 [node name="ShipmentTitle" type="Label" parent="StoreDetailView/ShipmentUI/VBoxContainer"]
 layout_mode = 2
-text = "📦 Pending Shipments"
+text = "Pending Shipments"
 horizontal_alignment = 1
 
 [node name="ShipmentList" type="ItemList" parent="StoreDetailView/ShipmentUI/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="ManualTaskUI" type="Control" parent="StoreDetailView"]
+layout_mode = 1
+anchors_preset = 0
+offset_top = 815.0
+offset_right = 720.0
+offset_bottom = 1080.0
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="StoreDetailView/ManualTaskUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="StoreDetailView/ManualTaskUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="ManualTitle" type="Label" parent="StoreDetailView/ManualTaskUI/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Dispatch Task"
+horizontal_alignment = 1
+
+[node name="RestockSection" type="VBoxContainer" parent="StoreDetailView/ManualTaskUI/VBox"]
+layout_mode = 2
+
+[node name="RestockTitle" type="Label" parent="StoreDetailView/ManualTaskUI/VBox/RestockSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "?Early Restock Request"
+
+[node name="RestockGrid" type="GridContainer" parent="StoreDetailView/ManualTaskUI/VBox/RestockSection"]
+layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 3
+
+[node name="Separator" type="HSeparator" parent="StoreDetailView/ManualTaskUI/VBox"]
+layout_mode = 2
+
+[node name="CommandSection" type="VBoxContainer" parent="StoreDetailView/ManualTaskUI/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="CommandTitle" type="Label" parent="StoreDetailView/ManualTaskUI/VBox/CommandSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Custom Command"
+
+[node name="CommandInput" type="LineEdit" parent="StoreDetailView/ManualTaskUI/VBox/CommandSection"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+placeholder_text = "Enter task command..."
+
+[node name="CommandSubmit" type="Button" parent="StoreDetailView/ManualTaskUI/VBox/CommandSection"]
+layout_mode = 2
+text = "Submit Command"

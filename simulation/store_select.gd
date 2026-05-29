@@ -35,6 +35,4 @@ func _find_unique_stores() -> Array:
 	return stores
 
 func _on_store_pressed(store_id: String) -> void:
-	# 把選中的 store_id 存到全域，讓 simulation_scene 讀取
-	GlobalData.selected_store_id = store_id
 	get_tree().change_scene_to_file("res://simulation/simulation_scene.tscn")

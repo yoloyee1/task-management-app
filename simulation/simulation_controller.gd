@@ -23,7 +23,6 @@ var active_shelves: Dictionary = {} # product_id -> Shelf instance
 var pending_deliveries: Array = []
 
 func _ready() -> void:
-	target_store_id = GlobalData.selected_store_id
 	timer.timeout.connect(_on_timer_timeout)
 	back_button.pressed.connect(_on_back_pressed)
 	_load_csv_data()

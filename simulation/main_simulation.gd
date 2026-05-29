@@ -24,7 +24,12 @@ extends Control
 @onready var task_item_list: ItemList = $StoreDetailView/TaskUI/VBoxContainer/TaskList
 @onready var shipment_item_list: ItemList = $StoreDetailView/ShipmentUI/VBoxContainer/ShipmentList
 
-var current_view_store: String = ""  # 當前正在查看的商店 ID（空 = 商店列表）
+# 手動任務派發UI
+@onready var restock_grid: GridContainer = $StoreDetailView/ManualTaskUI/VBox/RestockSection/RestockGrid
+@onready var command_input: LineEdit = $StoreDetailView/ManualTaskUI/VBox/CommandSection/CommandInput
+@onready var command_submit: Button = $StoreDetailView/ManualTaskUI/VBox/CommandSection/CommandSubmit
+
+var current_view_store: String = "" # 當前正在查看的商店 ID（空 = 商店列表）
 
 # store_id -> StoreCard node 的對照表
 var store_card_map: Dictionary = {}
@@ -34,6 +39,8 @@ func _ready() -> void:
 	sim_manager.tick_completed.connect(_on_tick_completed)
 	sim_manager.delivery_queued.connect(_on_delivery_queued)
 	time_scale_slider.value_changed.connect(_on_time_scale_changed)
+	command_submit.pressed.connect(_on_command_submit_pressed)
+	command_input.text_submitted.connect(func(_t): _on_command_submit_pressed())
 	
 	_setup_store_cards()
 	
@@ -60,6 +67,20 @@ func _setup_store_cards() -> void:
 			card.gui_input.connect(_on_card_gui_input.bind(store_id))
 			card.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			card.show()
+			
+			# 在 ProductGrid 的每個進度條前面插入阿拉伯數字標籤
+			var grid = card.get_node_or_null("VBox/ProductGrid")
+			if grid:
+				var progs = grid.get_children()  # 取得目前的 Prog_0 ~ Prog_9
+				for p in range(progs.size()):
+					var lbl = Label.new()
+					lbl.text = str(p + 1)
+					lbl.add_theme_font_size_override("font_size", 10)
+					lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+					lbl.custom_minimum_size = Vector2(14, 0)
+					grid.add_child(lbl)
+					# 把標籤移到對應進度條前面: 目標索引 = p * 2
+					grid.move_child(lbl, p * 2)
 		else:
 			card.hide()
 
@@ -71,6 +92,7 @@ func _on_store_pressed(store_id: String) -> void:
 	current_view_store = store_id
 	store_select_view.hide()
 	store_detail_view.show()
+	_build_restock_buttons(store_id)
 	_refresh_detail_view()
 
 func _on_back_pressed() -> void:
@@ -80,7 +102,7 @@ func _on_back_pressed() -> void:
 
 func _on_time_scale_changed(value: float) -> void:
 	time_scale_label.text = "Timer Speed: %.1fx" % value
-	var base_time = 3.0  # 對應 1.0x 的基準時間
+	var base_time = 3.0 # 對應 1.0x 的基準時間
 	var new_wait_time = base_time / value
 	sim_manager.timer.wait_time = new_wait_time
 	# 如果當前剩餘時間大於新的目標時間，直接重啟計時器讓它立刻加速
@@ -133,9 +155,18 @@ func _update_store_indicators() -> void:
 		var product_ids = sim_manager.get_store_products_sorted(store_id)
 		var grid = card.get_node_or_null("VBox/ProductGrid")
 		if grid:
-			var progs = grid.get_children()
+			# 只取 ProgressBar 節點（跳過數字標籤）
+			var progs: Array = []
+			for child in grid.get_children():
+				if child is ProgressBar:
+					progs.append(child)
+			
 			for i in range(progs.size()):
 				var prog = progs[i] as ProgressBar
+				# 數字標籤在前一個 sibling
+				var lbl_idx = prog.get_index() - 1
+				var lbl = grid.get_child(lbl_idx) if lbl_idx >= 0 else null
+				
 				if i < product_ids.size():
 					var prod_id = product_ids[i]
 					var prod_data = state["products"][prod_id]
@@ -163,8 +194,12 @@ func _update_store_indicators() -> void:
 						mod_tween.tween_property(prog, "modulate", target_mod, tick_duration * 0.25)
 						
 					prog.show()
+					if lbl:
+						lbl.show()
 				else:
 					prog.hide()
+					if lbl:
+						lbl.hide()
 
 func _get_store_worst_state(store_id: String) -> String:
 	var state = sim_manager.get_store_state(store_id)
@@ -175,7 +210,7 @@ func _get_store_worst_state(store_id: String) -> String:
 	for prod_id in state["products"]:
 		var prod_state = state["products"][prod_id]["state"]
 		if prod_state == "EMPTY":
-			return "EMPTY"  # 最差，直接回傳
+			return "EMPTY" # 最差，直接回傳
 		elif prod_state == "WARNING":
 			worst = "WARNING"
 	return worst
@@ -214,7 +249,7 @@ func _on_delivery_queued(store_id: String, product_id: String) -> void:
 	var icon = Label.new()
 	icon.text = "📦"
 	icon.add_theme_font_size_override("font_size", 28)
-	icon.position = start_pos - Vector2(14, 14)  # 偏移讓圖示居中
+	icon.position = start_pos - Vector2(14, 14) # 偏移讓圖示居中
 	animation_layer.add_child(icon)
 	
 	var tick_time = sim_manager.timer.wait_time
@@ -267,3 +302,40 @@ func _refresh_detail_view() -> void:
 		var arrival_date = sim_manager.all_dates[mini(delivery["arrival_index"], sim_manager.all_dates.size() - 1)]
 		var text = "📦 Product " + delivery["product_id"] + " +" + str(delivery["amount"]) + " → " + arrival_date
 		shipment_item_list.add_item(text)
+
+# ===== 手動任務派發 =====
+
+func _build_restock_buttons(store_id: String) -> void:
+	# 清空舊按鈕
+	for child in restock_grid.get_children():
+		child.queue_free()
+	
+	var product_ids = sim_manager.get_store_products_sorted(store_id)
+	for prod_id in product_ids:
+		var btn = Button.new()
+		btn.text = "⚡ " + prod_id
+		btn.tooltip_text = "Request early restock for Product " + prod_id
+		btn.pressed.connect(_on_restock_pressed.bind(store_id, prod_id, btn))
+		restock_grid.add_child(btn)
+
+func _on_restock_pressed(store_id: String, prod_id: String, btn: Button) -> void:
+	var success = sim_manager.request_early_restock(store_id, prod_id)
+	if success:
+		btn.text = "✅ " + prod_id
+		btn.disabled = true
+		# 刷新任務與進貨清單
+		_refresh_detail_view()
+	else:
+		# 已有待進貨訂單 — 閃爍提示
+		btn.text = "⚠️ " + prod_id
+		await get_tree().create_timer(1.0).timeout
+		btn.text = "⚡ " + prod_id
+
+func _on_command_submit_pressed() -> void:
+	var text = command_input.text.strip_edges()
+	if text.is_empty() or current_view_store.is_empty():
+		return
+	sim_manager.add_custom_task(current_view_store, text)
+	command_input.clear()
+	# 即時刷新任務列表
+	_refresh_detail_view()

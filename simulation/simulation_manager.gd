@@ -208,6 +208,10 @@ func _queue_delivery(store_id: String, prod_id: String, state: Dictionary) -> vo
 func _clean_tasks(state: Dictionary) -> void:
 	var new_tasks: Array = []
 	for task in state["tasks"]:
+		# 手動任務（product_id 為空）永遠保留，不跟進貨訂單綁定
+		if task["product_id"] == "":
+			new_tasks.append(task)
+			continue
 		var still_pending = false
 		for delivery in state["deliveries"]:
 			if delivery["product_id"] == task["product_id"]:
@@ -216,3 +220,28 @@ func _clean_tasks(state: Dictionary) -> void:
 		if still_pending:
 			new_tasks.append(task)
 	state["tasks"] = new_tasks
+
+# ===== 公開 API：手動派發任務 =====
+
+## 手動提早請求進貨。即使庫存還在 NORMAL 狀態也可以派發。
+## 若該商品已有待進貨訂單則回傳 false（避免重複）。
+func request_early_restock(store_id: String, prod_id: String) -> bool:
+	if not store_states.has(store_id):
+		return false
+	var state = store_states[store_id]
+	if not state["products"].has(prod_id):
+		return false
+	if _has_pending_delivery(state, prod_id):
+		return false  # 已有待進貨，不重複派發
+	_queue_delivery(store_id, prod_id, state)
+	return true
+
+## 手動輸入一條自訂文字任務，會出現在該商店的任務列表中。
+## product_id 設為空字串表示非商品相關（不會被 _clean_tasks 移除）。
+func add_custom_task(store_id: String, text: String) -> void:
+	if not store_states.has(store_id) or text.strip_edges().is_empty():
+		return
+	store_states[store_id]["tasks"].append({
+		"product_id": "",  # 空字串 = 手動任務，不與進貨訂單綁定
+		"text": "📋 " + text.strip_edges()
+	})
