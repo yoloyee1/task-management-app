@@ -33,101 +33,772 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.12, 0.12, 0.18, 1)
+color = Color(0.1, 0.1, 0.15, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="StoreSelectView"]
+[node name="ContentVBox" type="VBoxContainer" parent="StoreSelectView"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 10.0
+offset_right = -20.0
+offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="DateLabel" type="Label" parent="StoreSelectView/ContentVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "📅 Date: Loading..."
+horizontal_alignment = 1
+
+[node name="TimeScaleBox" type="HBoxContainer" parent="StoreSelectView/ContentVBox"]
+layout_mode = 2
 alignment = 1
 
-[node name="TitleLabel" type="Label" parent="StoreSelectView/VBoxContainer"]
+[node name="TimeScaleLabel" type="Label" parent="StoreSelectView/ContentVBox/TimeScaleBox"]
 layout_mode = 2
-text = "Select a Store"
-horizontal_alignment = 1
+text = "Timer Speed: 1.0x"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="StoreSelectView/VBoxContainer"]
+[node name="TimeScaleSlider" type="HSlider" parent="StoreSelectView/ContentVBox/TimeScaleBox"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 4
+min_value = 0.5
+max_value = 10.0
+step = 0.5
+value = 1.0
 
-[node name="GridContainer" type="GridContainer" parent="StoreSelectView/VBoxContainer/ScrollContainer"]
+[node name="SupplierBox" type="PanelContainer" parent="StoreSelectView/ContentVBox"]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 size_flags_horizontal = 4
-columns = 3
 
-[node name="StoreBtn_0" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
-custom_minimum_size = Vector2(200, 80)
+[node name="SupplierLabel" type="Label" parent="StoreSelectView/ContentVBox/SupplierBox"]
 layout_mode = 2
-text = "Store 0"
-
-[node name="StoreBtn_1" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 2
-text = "Store 1"
-
-[node name="StoreBtn_2" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 2
-text = "Store 2"
-
-[node name="StoreBtn_3" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 2
-text = "Store 3"
-
-[node name="StoreBtn_4" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 2
-text = "Store 4"
-
-[node name="StoreBtn_5" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 2
-text = "Store 5"
-
-[node name="StoreBtn_6" type="Button" parent="StoreSelectView/VBoxContainer/ScrollContainer/GridContainer"]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 2
-text = "Store 6"
-
-[node name="GlobalTaskUI" type="Control" parent="StoreSelectView"]
-layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -250.0
-offset_top = 288.0
-grow_horizontal = 0
-grow_vertical = 2
-
-[node name="Panel" type="Panel" parent="StoreSelectView/GlobalTaskUI"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="StoreSelectView/GlobalTaskUI"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="GlobalTaskTitle" type="Label" parent="StoreSelectView/GlobalTaskUI/VBoxContainer"]
-layout_mode = 2
-text = "All Restock Tasks"
+theme_override_font_sizes/font_size = 20
+text = "🏭 Supplier (進貨方)"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="GlobalTaskList" type="ItemList" parent="StoreSelectView/GlobalTaskUI/VBoxContainer"]
+[node name="StoreGridScroll" type="ScrollContainer" parent="StoreSelectView/ContentVBox"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="StoreGrid" type="GridContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 3
+
+[node name="StoreCard_0" type="PanelContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid"]
+custom_minimum_size = Vector2(220, 180)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0"]
+layout_mode = 2
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Store 0"
+horizontal_alignment = 1
+
+[node name="StatusIndicator" type="ColorRect" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+size_flags_horizontal = 4
+color = Color(0.2, 0.8, 0.2, 1)
+
+[node name="ProductGrid" type="GridContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_1" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_2" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_3" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_4" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_5" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_6" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_7" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_8" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_9" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_0/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="StoreCard_1" type="PanelContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid"]
+custom_minimum_size = Vector2(220, 180)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1"]
+layout_mode = 2
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Store 1"
+horizontal_alignment = 1
+
+[node name="StatusIndicator" type="ColorRect" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+size_flags_horizontal = 4
+color = Color(0.2, 0.8, 0.2, 1)
+
+[node name="ProductGrid" type="GridContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_1" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_2" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_3" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_4" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_5" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_6" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_7" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_8" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_9" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_1/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="StoreCard_2" type="PanelContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid"]
+custom_minimum_size = Vector2(220, 180)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2"]
+layout_mode = 2
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Store 2"
+horizontal_alignment = 1
+
+[node name="StatusIndicator" type="ColorRect" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+size_flags_horizontal = 4
+color = Color(0.2, 0.8, 0.2, 1)
+
+[node name="ProductGrid" type="GridContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_1" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_2" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_3" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_4" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_5" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_6" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_7" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_8" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_9" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_2/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="StoreCard_3" type="PanelContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid"]
+custom_minimum_size = Vector2(220, 180)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3"]
+layout_mode = 2
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Store 3"
+horizontal_alignment = 1
+
+[node name="StatusIndicator" type="ColorRect" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+size_flags_horizontal = 4
+color = Color(0.2, 0.8, 0.2, 1)
+
+[node name="ProductGrid" type="GridContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_1" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_2" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_3" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_4" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_5" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_6" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_7" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_8" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_9" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_3/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="StoreCard_4" type="PanelContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid"]
+custom_minimum_size = Vector2(220, 180)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4"]
+layout_mode = 2
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Store 4"
+horizontal_alignment = 1
+
+[node name="StatusIndicator" type="ColorRect" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+size_flags_horizontal = 4
+color = Color(0.2, 0.8, 0.2, 1)
+
+[node name="ProductGrid" type="GridContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_1" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_2" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_3" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_4" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_5" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_6" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_7" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_8" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_9" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_4/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="StoreCard_5" type="PanelContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid"]
+custom_minimum_size = Vector2(220, 180)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5"]
+layout_mode = 2
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Store 5"
+horizontal_alignment = 1
+
+[node name="StatusIndicator" type="ColorRect" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+size_flags_horizontal = 4
+color = Color(0.2, 0.8, 0.2, 1)
+
+[node name="ProductGrid" type="GridContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_1" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_2" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_3" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_4" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_5" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_6" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_7" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_8" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_9" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_5/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="StoreCard_6" type="PanelContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6"]
+layout_mode = 2
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Store 6"
+horizontal_alignment = 1
+
+[node name="StatusIndicator" type="ColorRect" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+size_flags_horizontal = 4
+color = Color(0.2, 0.8, 0.2, 1)
+
+[node name="ProductGrid" type="GridContainer" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="Prog_0" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_1" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_2" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_3" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_4" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_5" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_6" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_7" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_8" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="Prog_9" type="ProgressBar" parent="StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid/StoreCard_6/VBox/ProductGrid"]
+custom_minimum_size = Vector2(80, 12)
+layout_mode = 2
+max_value = 10000.0
+value = 10000.0
+show_percentage = false
+
+[node name="GlobalTaskUI" type="PanelContainer" parent="StoreSelectView/ContentVBox"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StoreSelectView/ContentVBox/GlobalTaskUI"]
+layout_mode = 2
+
+[node name="GlobalTaskTitle" type="Label" parent="StoreSelectView/ContentVBox/GlobalTaskUI/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "📋 All Restock Tasks"
+horizontal_alignment = 1
+
+[node name="GlobalTaskList" type="ItemList" parent="StoreSelectView/ContentVBox/GlobalTaskUI/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AnimationLayer" type="Control" parent="StoreSelectView"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="StoreDetailView" type="Control" parent="."]
 visible = false

@@ -5,6 +5,7 @@ class_name SimulationManager
 ## UI 層可以查詢任意商店的即時狀態來顯示。
 
 signal tick_completed  # 每次時間推進後發出
+signal delivery_queued(store_id: String, product_id: String)  # 當新進貨訂單產生時發出
 
 @onready var timer: Timer = $Timer
 
@@ -31,7 +32,7 @@ func _ready() -> void:
 	_load_csv_data()
 	_init_all_stores()
 	if all_dates.size() > 0:
-		timer.start(1.0)
+		timer.start(3.0)
 
 func get_current_date() -> String:
 	if current_date_index < all_dates.size():
@@ -202,6 +203,7 @@ func _queue_delivery(store_id: String, prod_id: String, state: Dictionary) -> vo
 		"product_id": prod_id,
 		"text": "Ordered: Product " + prod_id + " (Stock: " + str(prod["stock"]) + ") → Arrives " + arrival_date
 	})
+	delivery_queued.emit(store_id, prod_id)
 
 func _clean_tasks(state: Dictionary) -> void:
 	var new_tasks: Array = []

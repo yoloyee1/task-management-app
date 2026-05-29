@@ -1,15 +1,21 @@
 extends Control
 
 ## 管理兩個視圖（商店列表 / 商品詳情）之間的切換，
-## 並在查看某商店時即時更新該商店的視覺資料。
+## 在商店總覽時顯示供應商方框、商店卡片（含狀態指示燈）、
+## 以及進貨動畫（📦 從供應商飛向目標商店）。
 
 @onready var sim_manager: SimulationManager = $SimulationManager
 @onready var store_select_view: Control = $StoreSelectView
 @onready var store_detail_view: Control = $StoreDetailView
 
-# 商店列表
-@onready var store_grid: GridContainer = $StoreSelectView/VBoxContainer/ScrollContainer/GridContainer
-@onready var global_task_list: ItemList = $StoreSelectView/GlobalTaskUI/VBoxContainer/GlobalTaskList
+# 商店總覽
+@onready var overview_date_label: Label = $StoreSelectView/ContentVBox/DateLabel
+@onready var time_scale_label: Label = $StoreSelectView/ContentVBox/TimeScaleBox/TimeScaleLabel
+@onready var time_scale_slider: HSlider = $StoreSelectView/ContentVBox/TimeScaleBox/TimeScaleSlider
+@onready var supplier_box: PanelContainer = $StoreSelectView/ContentVBox/SupplierBox
+@onready var store_grid: GridContainer = $StoreSelectView/ContentVBox/StoreGridScroll/StoreGrid
+@onready var global_task_list: ItemList = $StoreSelectView/ContentVBox/GlobalTaskUI/VBoxContainer/GlobalTaskList
+@onready var animation_layer: Control = $StoreSelectView/AnimationLayer
 
 # 商品詳情
 @onready var back_button: Button = $StoreDetailView/TopBar/BackButton
@@ -20,30 +26,46 @@ extends Control
 
 var current_view_store: String = ""  # 當前正在查看的商店 ID（空 = 商店列表）
 
+# store_id -> StoreCard node 的對照表
+var store_card_map: Dictionary = {}
+
 func _ready() -> void:
 	back_button.pressed.connect(_on_back_pressed)
 	sim_manager.tick_completed.connect(_on_tick_completed)
+	sim_manager.delivery_queued.connect(_on_delivery_queued)
+	time_scale_slider.value_changed.connect(_on_time_scale_changed)
 	
-	# 等 SimulationManager 載入完 CSV 後再建立按鈕
-	_build_store_buttons()
+	_setup_store_cards()
 	
 	# 預設顯示商店列表
 	store_select_view.show()
 	store_detail_view.hide()
 
-func _build_store_buttons() -> void:
-	var btn_nodes = store_grid.get_children()
-	for i in range(btn_nodes.size()):
-		var btn = btn_nodes[i] as Button
+func _setup_store_cards() -> void:
+	var card_nodes = store_grid.get_children()
+	for i in range(card_nodes.size()):
+		var card = card_nodes[i] as PanelContainer
 		if i < sim_manager.store_ids.size():
 			var store_id = sim_manager.store_ids[i]
 			var display_id = str(store_id.to_int() + 1) if store_id.is_valid_int() else store_id
-			btn.text = "Store " + display_id
-			if not btn.pressed.is_connected(_on_store_pressed):
-				btn.pressed.connect(_on_store_pressed.bind(store_id))
-			btn.show()
+			
+			# 更新卡片名稱
+			var name_label = card.get_node("VBox/NameLabel") as Label
+			name_label.text = "🏪 Store " + display_id
+			
+			# 記錄對照
+			store_card_map[store_id] = card
+			
+			# 綁定點擊（使用 gui_input 因為 PanelContainer 沒有 pressed 信號）
+			card.gui_input.connect(_on_card_gui_input.bind(store_id))
+			card.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			card.show()
 		else:
-			btn.hide()
+			card.hide()
+
+func _on_card_gui_input(event: InputEvent, store_id: String) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		_on_store_pressed(store_id)
 
 func _on_store_pressed(store_id: String) -> void:
 	current_view_store = store_id
@@ -56,20 +78,160 @@ func _on_back_pressed() -> void:
 	store_detail_view.hide()
 	store_select_view.show()
 
+func _on_time_scale_changed(value: float) -> void:
+	time_scale_label.text = "Timer Speed: %.1fx" % value
+	var base_time = 3.0  # 對應 1.0x 的基準時間
+	var new_wait_time = base_time / value
+	sim_manager.timer.wait_time = new_wait_time
+	# 如果當前剩餘時間大於新的目標時間，直接重啟計時器讓它立刻加速
+	if sim_manager.timer.time_left > new_wait_time:
+		sim_manager.timer.start(new_wait_time)
+
 func _on_tick_completed() -> void:
+	# 更新總覽頁面的日期
+	overview_date_label.text = "📅 Date: " + sim_manager.get_current_date()
+	
+	# 更新每個商店卡片的狀態指示燈
+	_update_store_indicators()
+	
 	# 更新全局任務列表
-	if is_instance_valid(global_task_list):
-		global_task_list.clear()
-		for store_id in sim_manager.store_ids:
-			var state = sim_manager.get_store_state(store_id)
-			if state.has("tasks") and state["tasks"].size() > 0:
-				var display_id = str(store_id.to_int() + 1) if store_id.is_valid_int() else store_id
-				for task in state["tasks"]:
-					global_task_list.add_item("Store " + display_id + " - " + task["text"])
+	_update_global_task_list()
 
 	# 如果正在查看某商店，即時更新畫面
 	if current_view_store != "":
 		_refresh_detail_view()
+
+func _update_store_indicators() -> void:
+	var tick_duration = sim_manager.timer.wait_time
+	
+	for store_id in store_card_map:
+		var card = store_card_map[store_id] as PanelContainer
+		var indicator = card.get_node("VBox/StatusIndicator") as ColorRect
+		var worst = _get_store_worst_state(store_id)
+		
+		# 漸變指示燈顏色
+		var target_color: Color
+		match worst:
+			"NORMAL":
+				target_color = Color(0.2, 0.8, 0.2, 1)
+			"WARNING":
+				target_color = Color(0.9, 0.8, 0.1, 1)
+			"EMPTY":
+				target_color = Color(0.9, 0.2, 0.2, 1)
+			_:
+				target_color = Color(0.2, 0.8, 0.2, 1)
+		
+		if indicator.color != target_color:
+			var color_tween = create_tween()
+			color_tween.tween_property(indicator, "color", target_color, tick_duration * 0.25)
+
+		# 更新進度條（漸變）
+		var state = sim_manager.get_store_state(store_id)
+		if state.is_empty() or not state.has("products"):
+			continue
+		
+		var product_ids = sim_manager.get_store_products_sorted(store_id)
+		var grid = card.get_node_or_null("VBox/ProductGrid")
+		if grid:
+			var progs = grid.get_children()
+			for i in range(progs.size()):
+				var prog = progs[i] as ProgressBar
+				if i < product_ids.size():
+					var prod_id = product_ids[i]
+					var prod_data = state["products"][prod_id]
+					var target_value = float(prod_data["stock"])
+					
+					# 漸變進度條數值
+					if abs(prog.value - target_value) > 0.5:
+						var val_tween = create_tween()
+						val_tween.set_ease(Tween.EASE_OUT)
+						val_tween.set_trans(Tween.TRANS_CUBIC)
+						val_tween.tween_property(prog, "value", target_value, tick_duration * 0.5)
+					
+					# 漸變進度條顏色
+					var prod_state = prod_data["state"]
+					var target_mod: Color
+					if prod_state == "EMPTY":
+						target_mod = Color(0.9, 0.2, 0.2, 1)
+					elif prod_state == "WARNING":
+						target_mod = Color(0.9, 0.8, 0.1, 1)
+					else:
+						target_mod = Color(0.2, 0.8, 0.2, 1)
+					
+					if prog.modulate != target_mod:
+						var mod_tween = create_tween()
+						mod_tween.tween_property(prog, "modulate", target_mod, tick_duration * 0.25)
+						
+					prog.show()
+				else:
+					prog.hide()
+
+func _get_store_worst_state(store_id: String) -> String:
+	var state = sim_manager.get_store_state(store_id)
+	if state.is_empty() or not state.has("products"):
+		return "NORMAL"
+	
+	var worst = "NORMAL"
+	for prod_id in state["products"]:
+		var prod_state = state["products"][prod_id]["state"]
+		if prod_state == "EMPTY":
+			return "EMPTY"  # 最差，直接回傳
+		elif prod_state == "WARNING":
+			worst = "WARNING"
+	return worst
+
+func _update_global_task_list() -> void:
+	global_task_list.clear()
+	for store_id in sim_manager.store_ids:
+		var state = sim_manager.get_store_state(store_id)
+		if state.has("tasks") and state["tasks"].size() > 0:
+			var display_id = str(store_id.to_int() + 1) if store_id.is_valid_int() else store_id
+			for task in state["tasks"]:
+				global_task_list.add_item("Store " + display_id + " - " + task["text"])
+
+func _on_delivery_queued(store_id: String, product_id: String) -> void:
+	# 只在商店總覽頁面顯示動畫
+	if not store_select_view.visible:
+		return
+	
+	if not store_card_map.has(store_id):
+		return
+	
+	# 等一幀讓佈局完成
+	await get_tree().process_frame
+	
+	var target_card = store_card_map[store_id] as PanelContainer
+	
+	# 計算起點（供應商方框的中心，轉到 AnimationLayer 的座標）
+	var supplier_center = supplier_box.global_position + supplier_box.size * 0.5
+	var start_pos = supplier_center - animation_layer.global_position
+	
+	# 計算終點（目標商店卡片的中心）
+	var card_center = target_card.global_position + target_card.size * 0.5
+	var end_pos = card_center - animation_layer.global_position
+	
+	# 建立飛行的 📦 圖示
+	var icon = Label.new()
+	icon.text = "📦"
+	icon.add_theme_font_size_override("font_size", 28)
+	icon.position = start_pos - Vector2(14, 14)  # 偏移讓圖示居中
+	animation_layer.add_child(icon)
+	
+	var tick_time = sim_manager.timer.wait_time
+	var fade_time = minf(tick_time * 0.15, 0.3)
+	var fly_time = tick_time - fade_time
+	
+	# 用 Tween 做動畫（飛行時間恰好等於一個 tick，貨物抵達時庫存才增加）
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_QUAD)
+	tween.tween_property(icon, "position", end_pos - Vector2(14, 14), fly_time)
+	
+	# 到達後立即淡出消失
+	tween.tween_property(icon, "modulate:a", 0.0, fade_time)
+	tween.tween_callback(icon.queue_free)
+
+# ===== 商店詳情頁 =====
 
 func _refresh_detail_view() -> void:
 	var store_id = current_view_store
