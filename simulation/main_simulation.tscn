@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://da0gjr0mnuobe" path="res://simulation/main_simulation.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://bkvu844wv70ix" path="res://simulation/simulation_manager.gd" id="2_mgr"]
-[ext_resource type="PackedScene" path="res://simulation/shelf.tscn" id="3_shelf"]
+[ext_resource type="PackedScene" uid="uid://cnsu1iw76kqjx" path="res://simulation/shelf.tscn" id="3_shelf"]
 
 [node name="MainSimulation" type="Control"]
 layout_mode = 3
@@ -1004,7 +1004,7 @@ layout_mode = 2
 [node name="RestockTitle" type="Label" parent="StoreDetailView/ManualTaskUI/VBox/RestockSection"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 13
-text = "?Early Restock Request"
+text = "Early Restock Request"
 
 [node name="RestockGrid" type="GridContainer" parent="StoreDetailView/ManualTaskUI/VBox/RestockSection"]
 layout_mode = 2

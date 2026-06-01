@@ -13,9 +13,9 @@ func display(p_id: String, stock: int, state: String, last_change: int = 0) -> v
 	product_label.text = "Product: " + str(p_id)
 	
 	if last_change < 0:
-		stock_label.text = "Stock: " + str(stock) + " (" + str(last_change) + ")"
+		stock_label.text = "Stock: " + str(stock) + "\n (" + str(last_change) + ")"
 	elif last_change > 0:
-		stock_label.text = "Stock: " + str(stock) + " (+" + str(last_change) + ")"
+		stock_label.text = "Stock: " + str(stock) + "\n (+" + str(last_change) + ")"
 	else:
 		stock_label.text = "Stock: " + str(stock)
 	

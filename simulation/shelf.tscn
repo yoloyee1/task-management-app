@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://cnsu1iw76kqjx"]
 
-[ext_resource type="Script" path="res://simulation/shelf.gd" id="1_shelf"]
+[ext_resource type="Script" uid="uid://qpx22i7tvqnk" path="res://simulation/shelf.gd" id="1_shelf"]
 
 [node name="Shelf" type="Control"]
 layout_mode = 3
