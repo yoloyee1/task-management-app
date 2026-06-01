@@ -26,10 +26,6 @@ window/handheld/orientation=1
 
 movie_writer/movie_file="D:/making game/RedotMovie/task management app.avi"
 
-[gui]
-
-theme/custom_font="uid://bjrrskqdciu4a"
-
 [rendering]
 
 renderer/rendering_method="mobile"

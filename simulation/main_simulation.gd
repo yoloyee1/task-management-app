@@ -9,7 +9,8 @@ extends Control
 @onready var store_detail_view: Control = $StoreDetailView
 
 # 商店總覽
-@onready var overview_date_label: Label = $StoreSelectView/ContentVBox/DateLabel
+@onready var overview_date_label: Label = $StoreSelectView/ContentVBox/DateBox/DateLabel
+@onready var overview_date_emoji: Label = $StoreSelectView/ContentVBox/DateBox/DateEmoji
 @onready var time_scale_label: Label = $StoreSelectView/ContentVBox/TimeScaleBox/TimeScaleLabel
 @onready var time_scale_slider: HSlider = $StoreSelectView/ContentVBox/TimeScaleBox/TimeScaleSlider
 @onready var supplier_box: PanelContainer = $StoreSelectView/ContentVBox/SupplierBox
@@ -33,6 +34,8 @@ var current_view_store: String = "" # 當前正在查看的商店 ID（空 = 商
 
 # store_id -> StoreCard node 的對照表
 var store_card_map: Dictionary = {}
+
+var emoji_font: Font = preload("res://NotoColorEmoji.ttf")
 
 func _ready() -> void:
 	back_button.pressed.connect(_on_back_pressed)
@@ -58,7 +61,7 @@ func _setup_store_cards() -> void:
 			
 			# 更新卡片名稱
 			var name_label = card.get_node("VBox/NameLabel") as Label
-			name_label.text = "🏪 Store " + display_id
+			name_label.text = "Store " + display_id
 			
 			# 記錄對照
 			store_card_map[store_id] = card
@@ -111,7 +114,7 @@ func _on_time_scale_changed(value: float) -> void:
 
 func _on_tick_completed() -> void:
 	# 更新總覽頁面的日期
-	overview_date_label.text = "📅 Date: " + sim_manager.get_current_date()
+	overview_date_label.text = " Date: " + sim_manager.get_current_date()
 	
 	# 更新每個商店卡片的狀態指示燈
 	_update_store_indicators()
@@ -248,6 +251,7 @@ func _on_delivery_queued(store_id: String, product_id: String) -> void:
 	# 建立飛行的 📦 圖示
 	var icon = Label.new()
 	icon.text = "📦"
+	icon.add_theme_font_override("font", emoji_font)
 	icon.add_theme_font_size_override("font_size", 28)
 	icon.position = start_pos - Vector2(14, 14) # 偏移讓圖示居中
 	animation_layer.add_child(icon)
@@ -300,7 +304,7 @@ func _refresh_detail_view() -> void:
 	shipment_item_list.clear()
 	for delivery in state["deliveries"]:
 		var arrival_date = sim_manager.all_dates[mini(delivery["arrival_index"], sim_manager.all_dates.size() - 1)]
-		var text = "📦 Product " + delivery["product_id"] + " +" + str(delivery["amount"]) + " → " + arrival_date
+		var text = "Product " + delivery["product_id"] + " +" + str(delivery["amount"]) + " -> " + arrival_date
 		shipment_item_list.add_item(text)
 
 # ===== 手動任務派發 =====
@@ -313,7 +317,7 @@ func _build_restock_buttons(store_id: String) -> void:
 	var product_ids = sim_manager.get_store_products_sorted(store_id)
 	for prod_id in product_ids:
 		var btn = Button.new()
-		btn.text = "⚡ " + prod_id
+		btn.text = prod_id
 		btn.tooltip_text = "Request early restock for Product " + prod_id
 		btn.pressed.connect(_on_restock_pressed.bind(store_id, prod_id, btn))
 		restock_grid.add_child(btn)
@@ -321,15 +325,15 @@ func _build_restock_buttons(store_id: String) -> void:
 func _on_restock_pressed(store_id: String, prod_id: String, btn: Button) -> void:
 	var success = sim_manager.request_early_restock(store_id, prod_id)
 	if success:
-		btn.text = "✅ " + prod_id
+		btn.text = "[OK] " + prod_id
 		btn.disabled = true
 		# 刷新任務與進貨清單
 		_refresh_detail_view()
 	else:
 		# 已有待進貨訂單 — 閃爍提示
-		btn.text = "⚠️ " + prod_id
+		btn.text = "[!] " + prod_id
 		await get_tree().create_timer(1.0).timeout
-		btn.text = "⚡ " + prod_id
+		btn.text = prod_id
 
 func _on_command_submit_pressed() -> void:
 	var text = command_input.text.strip_edges()

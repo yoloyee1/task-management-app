@@ -149,7 +149,7 @@ func _on_shelf_restock_requested(product_id: String) -> void:
 	# 在任務列表中顯示
 	var shelf = active_shelves[product_id]
 	var arrival_date = dates[mini(arrival_index, dates.size() - 1)]
-	var task_text = "Ordered: Product " + product_id + " (Stock: " + str(shelf.stock) + ") → Arrives " + arrival_date
+	var task_text = "Ordered: Product " + product_id + " (Stock: " + str(shelf.stock) + ") -> Arrives " + arrival_date
 	var idx = task_item_list.get_item_count()
 	task_item_list.add_item(task_text)
 	task_item_list.set_item_metadata(idx, product_id)
@@ -163,7 +163,7 @@ func _refresh_shipment_ui() -> void:
 		var prod_id = delivery["product_id"]
 		var amount = delivery["amount"]
 		var arrival_date = dates[mini(delivery["arrival_index"], dates.size() - 1)]
-		var text = "📦 Product " + prod_id + " +" + str(amount) + " → " + arrival_date
+		var text = "Product " + prod_id + " +" + str(amount) + " -> " + arrival_date
 		shipment_item_list.add_item(text)
 	
 	# 如果沒有待進貨項目也不用移除

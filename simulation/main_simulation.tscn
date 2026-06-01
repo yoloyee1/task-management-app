@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bvvjf6k0bs762"]
+[gd_scene load_steps=5 format=3 uid="uid://bvvjf6k0bs762"]
 
 [ext_resource type="Script" uid="uid://da0gjr0mnuobe" path="res://simulation/main_simulation.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://bkvu844wv70ix" path="res://simulation/simulation_manager.gd" id="2_mgr"]
 [ext_resource type="PackedScene" uid="uid://cnsu1iw76kqjx" path="res://simulation/shelf.tscn" id="3_shelf"]
+[ext_resource type="FontFile" path="res://NotoColorEmoji.ttf" id="4_emoji"]
 
 [node name="MainSimulation" type="Control"]
 layout_mode = 3
@@ -48,11 +49,20 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 12
 
-[node name="DateLabel" type="Label" parent="StoreSelectView/ContentVBox"]
+[node name="DateBox" type="HBoxContainer" parent="StoreSelectView/ContentVBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="DateEmoji" type="Label" parent="StoreSelectView/ContentVBox/DateBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_emoji")
+theme_override_font_sizes/font_size = 18
+text = "📅"
+
+[node name="DateLabel" type="Label" parent="StoreSelectView/ContentVBox/DateBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "?? Date: Loading..."
-horizontal_alignment = 1
+text = " Date: Loading..."
 
 [node name="TimeScaleBox" type="HBoxContainer" parent="StoreSelectView/ContentVBox"]
 layout_mode = 2
@@ -76,10 +86,20 @@ custom_minimum_size = Vector2(120, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="SupplierLabel" type="Label" parent="StoreSelectView/ContentVBox/SupplierBox"]
+[node name="SupplierLabelBox" type="HBoxContainer" parent="StoreSelectView/ContentVBox/SupplierBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="SupplierEmoji" type="Label" parent="StoreSelectView/ContentVBox/SupplierBox/SupplierLabelBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_emoji")
+theme_override_font_sizes/font_size = 20
+text = "🏭"
+
+[node name="SupplierLabel" type="Label" parent="StoreSelectView/ContentVBox/SupplierBox/SupplierLabelBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Supplier"
+text = " Supplier"
 horizontal_alignment = 1
 vertical_alignment = 1
 

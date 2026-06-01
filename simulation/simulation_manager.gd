@@ -201,7 +201,7 @@ func _queue_delivery(store_id: String, prod_id: String, state: Dictionary) -> vo
 	var prod = state["products"][prod_id]
 	state["tasks"].append({
 		"product_id": prod_id,
-		"text": "Ordered: Product " + prod_id + " (Stock: " + str(prod["stock"]) + ") → Arrives " + arrival_date
+		"text": "Ordered: Product " + prod_id + " (Stock: " + str(prod["stock"]) + ") -> Arrives " + arrival_date
 	})
 	delivery_queued.emit(store_id, prod_id)
 
@@ -243,5 +243,5 @@ func add_custom_task(store_id: String, text: String) -> void:
 		return
 	store_states[store_id]["tasks"].append({
 		"product_id": "",  # 空字串 = 手動任務，不與進貨訂單綁定
-		"text": "📋 " + text.strip_edges()
+		"text": "[Manual] " + text.strip_edges()
 	})
