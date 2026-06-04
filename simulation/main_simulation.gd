@@ -74,7 +74,7 @@ func _setup_store_cards() -> void:
 			# 在 ProductGrid 的每個進度條前面插入阿拉伯數字標籤
 			var grid = card.get_node_or_null("VBox/ProductGrid")
 			if grid:
-				var progs = grid.get_children()  # 取得目前的 Prog_0 ~ Prog_9
+				var progs = grid.get_children() # 取得目前的 Prog_0 ~ Prog_9
 				for p in range(progs.size()):
 					var lbl = Label.new()
 					lbl.text = str(p + 1)
